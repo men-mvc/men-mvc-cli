@@ -1,6 +1,6 @@
 {
-  "name": "@men-mvc/cli",
-  "version": "1.1.0",
+  "name": "@men-mvc/men-mvc-cli",
+  "version": "1.0.0",
   "description": "npm command to install MEN MVC application",
   "main": "lib/createAppCommand.js",
   "scripts": {
