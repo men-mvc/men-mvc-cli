@@ -4,7 +4,6 @@
   "description": "npm command to install MEN MVC application",
   "main": "lib/createAppCommand.js",
   "scripts": {
-    "publish": "npm publish --registry=https://registry.npmjs.org",
     "postinstall": "node ./lib/showInfo.js"
   },
   "private": false,
