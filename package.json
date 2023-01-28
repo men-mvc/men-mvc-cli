@@ -1,10 +1,11 @@
 {
   "name": "@men-mvc/cli",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "npm command to install MEN MVC application",
   "main": "lib/createAppCommand.js",
   "scripts": {
-    "publish": "npm publish --registry=https://registry.npmjs.org"
+    "publish": "npm publish --registry=https://registry.npmjs.org",
+    "postinstall": "node ./lib/showInfo.js"
   },
   "private": false,
   "publishConfig": {
@@ -16,6 +17,7 @@
   "bin": {
     "create-men-mvc-app": "./bin/index.js"
   },
+  "keywords": [  "men-mvc", "men-mvc-cli", "@men-mvc/@men-mvc-cli", "@men-mvc/men-mvc", "node-js-framework", "node-js-web-framework", "node-js-mvc-framework" ],
   "dependencies": {
     "git-clone": "^0.2.0"
   },
