@@ -70,15 +70,11 @@ const execute = async () => {
     }
     createProjectFolder();
 
-    // sometimes, git-clone package does not clone the repo properly, this code snippet is added to solve that problem
-    await createAppCommand.cloneRepo(projectFolder);
-    await delay(1000);
-    if (! isDirectoryEmpty(projectFolder)) {
-        deleteProjectFolder(projectFolder);
-        createProjectFolder();
+    try  {
+        await createAppCommand.cloneRepo(projectFolder);
+    } catch (e) {
+        showError(e.message);
     }
-
-    await createAppCommand.cloneRepo(projectFolder);
     /**
      * delete the .git folder
      * wait for up to 10 seconds
