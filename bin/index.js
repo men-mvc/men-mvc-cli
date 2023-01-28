@@ -2,11 +2,14 @@
 const fs = require('fs');
 const path = require('path');
 const createAppCommand = require('../lib/createAppCommand');
-const showInfo = require('../lib/showInfo');
 
 const timeoutErrorMessage = `It was taking longer than usual to clone the repository. Please try again.`;
 let projectFolder = null;
 let emptyFolderPreExisted = false;
+
+const showVersion = () => {
+    console.log("\x1b[36m", 'MEN MVC CLI - 1.1.3');
+}
 
 const showError = (message) => {
     console.log("\x1b[31m", message);
@@ -51,7 +54,7 @@ const execute = async () => {
         showError("Project's folder name is missing.");
     }
     if (args[2] === '--version') {
-        showInfo.showVersion();
+        showVersion();
         process.exit();
     }
     projectFolder = args[2];
@@ -103,7 +106,7 @@ const execute = async () => {
         showError(timeoutErrorMessage);
     }
     fs.renameSync(path.join(projectFolder, `.env.example`), path.join(projectFolder, `.env`));
-    showInfo.showPostInstallationInfoMessage();
+    createAppCommand.npmInstall(projectFolder);
 }
 
 execute();
