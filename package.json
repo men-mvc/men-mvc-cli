@@ -1,5 +1,5 @@
 {
-  "name": "men-mvc-cli",
+  "name": "@men-mvc/cli",
   "version": "1.0.0",
   "description": "npm command to install MEN MVC application",
   "main": "lib/createAppCommand.js",
@@ -9,7 +9,7 @@
   "author": "wai yan hein <waiyanhein.uk@gmail.com>",
   "license": "MIT",
   "bin": {
-    "create-men-mvc-app-local": "./bin/index.js"
+    "create-men-mvc-app": "./bin/index.js"
   },
   "dependencies": {
     "git-clone": "^0.2.0"
