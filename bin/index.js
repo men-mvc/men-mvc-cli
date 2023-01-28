@@ -8,7 +8,7 @@ let projectFolder = null;
 let emptyFolderPreExisted = false;
 
 const showVersion = () => {
-    console.log("\x1b[36m", 'MEN MVC CLI - 1.1.3');
+    console.log("\x1b[36m", 'MEN MVC CLI - 1.1.4');
 }
 
 const showError = (message) => {
