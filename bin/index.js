@@ -24,11 +24,15 @@ const delay = (milliseconds = 1000) => {
     })
 }
 
-const deleteProjectFolder=  () => {
+const deleteProjectFolder = () => {
     if (! projectFolder) {
         return;
     }
     fs.rmSync(projectFolder, { recursive: true });
+}
+
+const createProjectFolder = () => {
+    fs.mkdirSync(projectFolder, { recursive: true });
 }
 
 const isDirectory = (path) => {
@@ -46,6 +50,10 @@ const execute = async () => {
     if (args.length <= 2) {
         showError("Project's folder name is missing.");
     }
+    if (args[2] === '--version') {
+        showInfo.showVersion();
+        process.exit();
+    }
     projectFolder = args[2];
     if (! projectFolder) {
         showError("Project's folder name is missing.");
@@ -60,7 +68,16 @@ const execute = async () => {
         }
         emptyFolderPreExisted = true;
     }
-    fs.mkdirSync(projectFolder, { recursive: true });
+    createProjectFolder();
+
+    // sometimes, git-clone package does not clone the repo properly, this code snippet is added to solve that problem
+    await createAppCommand.cloneRepo(projectFolder);
+    await delay(1000);
+    if (! isDirectoryEmpty(projectFolder)) {
+        deleteProjectFolder(projectFolder);
+        createProjectFolder();
+    }
+
     await createAppCommand.cloneRepo(projectFolder);
     /**
      * delete the .git folder

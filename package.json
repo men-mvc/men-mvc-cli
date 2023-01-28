@@ -1,6 +1,6 @@
 {
   "name": "@men-mvc/men-mvc-cli",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "npm command to install MEN MVC application",
   "main": "lib/createAppCommand.js",
   "scripts": {
@@ -16,7 +16,15 @@
   "bin": {
     "create-men-mvc-app": "./bin/index.js"
   },
-  "keywords": [  "men-mvc", "men-mvc-cli", "@men-mvc/@men-mvc-cli", "@men-mvc/men-mvc", "node-js-framework", "node-js-web-framework", "node-js-mvc-framework" ],
+  "keywords": [
+    "men-mvc",
+    "men-mvc-cli",
+    "@men-mvc/@men-mvc-cli",
+    "@men-mvc/men-mvc",
+    "node-js-framework",
+    "node-js-web-framework",
+    "node-js-mvc-framework"
+  ],
   "dependencies": {
     "git-clone": "^0.2.0"
   },
