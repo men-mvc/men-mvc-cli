@@ -4,8 +4,13 @@
   "description": "npm command to install MEN MVC application",
   "main": "lib/createAppCommand.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "publish": "npm publish --registry=https://registry.npmjs.org"
   },
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "commonjs",
   "author": "wai yan hein <waiyanhein.uk@gmail.com>",
   "license": "MIT",
   "bin": {
