@@ -2,11 +2,17 @@
 const fs = require('fs');
 const path = require('path');
 const createAppCommand = require('../lib/createAppCommand');
+const showInfo = require('../lib/showInfo');
 
+const timeoutErrorMessage = `It was taking longer than usual to clone the repository. Please try again.`;
 let projectFolder = null;
+let emptyFolderPreExisted = false;
 
 const showError = (message) => {
     console.log("\x1b[31m", message);
+    if (emptyFolderPreExisted) {
+        deleteProjectFolder();
+    }
     process.exit();
 }
 
@@ -16,6 +22,23 @@ const delay = (milliseconds = 1000) => {
             resolve();
         }, milliseconds);
     })
+}
+
+const deleteProjectFolder=  () => {
+    if (! projectFolder) {
+        return;
+    }
+    fs.rmSync(projectFolder, { recursive: true });
+}
+
+const isDirectory = (path) => {
+    var stats = fs.statSync(path);
+
+    return stats.isDirectory();
+}
+
+const isDirectoryEmpty = (path) => {
+    return fs.readdirSync(path).length < 1;
 }
 
 const execute = async () => {
@@ -28,22 +51,46 @@ const execute = async () => {
         showError("Project's folder name is missing.");
     }
     if (fs.existsSync(projectFolder)) {
-        showError("Folder with the same name already exists.");
+        if (! isDirectory(projectFolder)) {
+            showError("Folder/ file with the same name already exists.");
+        }
+        // if the folder and the folder is empty, it will proceed
+        if (! isDirectoryEmpty(projectFolder)) {
+            showError("Folder is not empty.");
+        }
+        emptyFolderPreExisted = true;
     }
     fs.mkdirSync(projectFolder, { recursive: true });
-    await createAppCommand.createApp(projectFolder);
-    await delay(2000);
-    const gitFolder = `${projectFolder}/.git`;
-    if (! fs.existsSync(gitFolder)) {
-        await delay(3000);
+    await createAppCommand.cloneRepo(projectFolder);
+    /**
+     * delete the .git folder
+     * wait for up to 10 seconds
+     */
+    const gitFolder = path.join(projectFolder, ".git");
+    for (let i=0; i< 10; i++) {
+        if (! fs.existsSync(gitFolder)) {
+            await delay();
+        }
     }
     if (! fs.existsSync(gitFolder)) {
-        fs.rmSync(projectFolder, { recursive: true });
-        showError(`Timeout cloning the repository.`);
+        showError(timeoutErrorMessage);
     }
     fs.rmSync(gitFolder, { recursive: true });
-    // rename .env.example to .env
+    /**
+     * rename .env.example to .env
+     * wait for up to 10 seconds
+     */
+    const exampleEnvPath = path.join(projectFolder, `.env.example`);
+    for (let i=0; i< 10; i++) {
+        if (! fs.existsSync(exampleEnvPath)) {
+            await delay();
+        }
+    }
+    if (! fs.existsSync(exampleEnvPath)) {
+        showError(timeoutErrorMessage);
+    }
     fs.renameSync(path.join(projectFolder, `.env.example`), path.join(projectFolder, `.env`));
+    showInfo.showPostInstallationInfoMessage();
 }
 
 execute();
